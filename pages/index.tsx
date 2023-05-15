@@ -12,7 +12,6 @@ import LogRocket from 'logrocket';
 
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-if (process.env.NODE_ENV === 'production') LogRocket.init('jymlud/chat-langchain-dfat');
 
 
 function ExampleChip({ text, onClick }: { text: string; onClick: (text: string) => void}) {
@@ -134,10 +133,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>DFAT Q&A</title>
+        <title>Imigrasi Q&A</title>
         <meta
           name="description"
-          content={`AI-powered Q&A backed by DFAT reports`}
+          content={`AI-powered Q&A backed by Imigrasi.go.id`}
         />
         <meta
           name="viewport"
@@ -160,7 +159,7 @@ export default function Home() {
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
                   type="text"
-                  placeholder="What is JSS4D?"
+                  placeholder="In what cases can I get deported?"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -176,8 +175,8 @@ export default function Home() {
 
             {showExamples && (
                 <div className="w-full">
-                    <ExampleChip text="What is the budget of the PHD program in Timor-Leste?" onClick={onClickChip} />
-                    <ExampleChip text="Programs transitioned to GoTL?" onClick={onClickChip} />
+                    <ExampleChip text="What is the stay limit for tourists?" onClick={onClickChip} />
+                    <ExampleChip text="What will happen if I overstay my visa?" onClick={onClickChip} />
                 </div>
             )}
             {loading ? (
@@ -240,7 +239,6 @@ export default function Home() {
             )}
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

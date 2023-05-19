@@ -218,7 +218,7 @@ export default function Home() {
                         <div className="flex justify-between">
                           <div className="flex items-center">
                             <div>
-                              <div className="font-bold text-xl">{chunk.title}</div>
+                              <div className="font-bold text-xl">{chunk.title || chunk.url}</div>
                             </div>
                           </div>
                           <a
@@ -239,6 +239,7 @@ export default function Home() {
             )}
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );

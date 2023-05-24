@@ -2,6 +2,7 @@ import { Answer } from '@/components/Answer/Answer';
 import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/Navbar';
 import { DocumentChunk } from '@/types';
+import { getSessionId } from '@/utils';
 
 import {
   IconArrowRight,
@@ -43,6 +44,7 @@ export default function Home() {
   const [chunks, setChunks] = useState<DocumentChunk[]>([]);
   const [answer, setAnswer] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [answered, setAnswered] = useState<boolean>(false);
   const [showExamples, setShowExamples] = useState<boolean>(true);
 
   const [matchCount, setMatchCount] = useState<number>(5);
@@ -66,13 +68,17 @@ export default function Home() {
     setChunks([]);
 
     setLoading(true);
+    setAnswered(false);
 
     // Create a WebSocket connection to the '/chat' endpoint
     const socket = new WebSocket(`${WS_URL}/chat`);
+    const session_id = getSessionId();
 
     // Set up the WebSocket event listeners
-    socket.onopen = (event) => {
-      // Send the query once the WebSocket connection is open
+    socket.onopen = () => {
+      // Send the session id once the WebSocket connection is open
+      socket.send(JSON.stringify({ session_id: session_id }));
+      // Then send the query right after
       socket.send(text);
     };
 
@@ -89,6 +95,7 @@ export default function Home() {
       // Close the WebSocket connection if the server has indicated that it's done sending messages
       if (data.type && data.type === 'end') {
         setLoading(false);
+        setAnswered(true)
       }
       if (data.type && data.type === 'sources') {
         setChunks(data.sources);
@@ -98,6 +105,7 @@ export default function Home() {
 
     socket.onerror = (error) => {
       setLoading(false);
+      setAnswered(false)
       console.error('WebSocket error:', error);
       alert(
         'An error occurred while trying to connect to the server. Please try again later.'
@@ -223,7 +231,7 @@ export default function Home() {
                 ) : (
                   ''
                 )}
-                <Answer text={answer} />
+                <Answer text={answer} query={query} answered={answered} />
 
                 <div className="mt-6 mb-16">
                   {chunks.length ? (

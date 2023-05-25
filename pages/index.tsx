@@ -11,6 +11,10 @@ import {
 } from '@tabler/icons-react';
 
 import Head from 'next/head';
+import LogRocket from 'logrocket';
+
+if (process.env.NODE_ENV === 'production')
+  LogRocket.init('jymlud/imigrasi-bot');
 
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
@@ -95,7 +99,7 @@ export default function Home() {
       // Close the WebSocket connection if the server has indicated that it's done sending messages
       if (data.type && data.type === 'end') {
         setLoading(false);
-        setAnswered(true)
+        setAnswered(true);
       }
       if (data.type && data.type === 'sources') {
         setChunks(data.sources);
@@ -105,7 +109,7 @@ export default function Home() {
 
     socket.onerror = (error) => {
       setLoading(false);
-      setAnswered(false)
+      setAnswered(false);
       console.error('WebSocket error:', error);
       alert(
         'An error occurred while trying to connect to the server. Please try again later.'

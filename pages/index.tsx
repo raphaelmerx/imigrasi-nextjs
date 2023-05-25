@@ -12,6 +12,7 @@ import LogRocket from 'logrocket';
 
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+if (process.env.NODE_ENV === 'production') LogRocket.init('jymlud/imigrasi-bot');
 
 
 function ExampleChip({ text, onClick }: { text: string; onClick: (text: string) => void}) {

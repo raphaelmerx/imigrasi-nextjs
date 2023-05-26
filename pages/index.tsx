@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === 'production')
 
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_BACKEND_URL;
+const scheme = process.env.NODE_ENV === 'production' ? 'wss://' : 'ws://';
+const WS_URL = scheme + process.env.NEXT_PUBLIC_BACKEND_URL;
 
 function ExampleChip({
   text,

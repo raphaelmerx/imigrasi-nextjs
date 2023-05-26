@@ -6,7 +6,8 @@ import { getSessionId } from '@/utils';
 import './answer.module.css';
 import styles from './answer.module.css';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const scheme = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
+const BACKEND_URL = scheme + process.env.NEXT_PUBLIC_BACKEND_URL;
 interface AnswerProps {
   text: string;
   query: string;

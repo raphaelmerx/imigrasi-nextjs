@@ -18,7 +18,8 @@ export const Answer: React.FC<AnswerProps> = ({ text, query, answered }) => {
     .split('\n')
     .map((paragraph, index) => <p key={index}>{paragraph}</p>);
 
-  const [voted, setVoted] = useState<boolean>(false);
+  const [votingVisible, setVotingVisible] = useState<boolean>(true);
+  const [feedbackMsg, setFeedbackMsg] = useState<string>('Was this answer useful?');
 
   const handleVote = async (vote: number) => {
     const session_id = getSessionId();
@@ -38,10 +39,10 @@ export const Answer: React.FC<AnswerProps> = ({ text, query, answered }) => {
 
     if (!response.ok) {
       /* Handle */
-      console.log('Voting error');
+      alert('Voting error');
     } else {
-      setVoted(true);
-      console.log('Voting success');
+      setVotingVisible(false);
+      setFeedbackMsg('Thank you for your vote!');
     }
   };
 
@@ -50,22 +51,26 @@ export const Answer: React.FC<AnswerProps> = ({ text, query, answered }) => {
       {paragraphs}
       <div
         className={`flex align-text-bottom border-t border-gray-300 my-2 justify-end ${
-          (answered && !voted) ? styles.fadeIn : 'invisible'
+          answered ? styles.fadeIn : 'invisible'
         }`}
       >
-        <p className="pr-2 pt-1">Was this answer useful?</p>
-        <button>
-          <IconThumbUp
-            onClick={() => handleVote(1)}
-            className="hover:cursor-pointer hover:text-blue-600 sm:h-6"
-          />
-        </button>
-        <button>
-          <IconThumbDown
-            onClick={() => handleVote(-1)}
-            className="hover:cursor-pointer hover:text-blue-600 sm:h-6"
-          />
-        </button>
+        <p className="pr-2 pt-1">{feedbackMsg}</p>
+        {votingVisible && (
+          <>
+            <button>
+              <IconThumbUp
+                onClick={() => handleVote(1)}
+                className="hover:cursor-pointer hover:text-blue-600 sm:h-6"
+              />
+            </button>
+            <button>
+              <IconThumbDown
+                onClick={() => handleVote(-1)}
+                className="hover:cursor-pointer hover:text-blue-600 sm:h-6"
+              />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
